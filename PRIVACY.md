@@ -1,4 +1,4 @@
-# Privacy Policy for SiteLocker 🔒
+# Privacy Policy for SiteLocker
 
 Last updated: May 26, 2026
 
