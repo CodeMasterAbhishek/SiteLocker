@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- A minimal black outline padlock icon matching the user's second image -->
+  <!-- Padlock Shackle -->
+  <path d="M36 48 V32 A28 28 0 0 1 92 32 V48" fill="none" stroke="#000000" stroke-width="8" stroke-linecap="round" />
+  <!-- Padlock Body -->
+  <rect x="20" y="48" width="88" height="68" rx="12" fill="none" stroke="#000000" stroke-width="8" />
+  <!-- Keyhole/Notch Line -->
+  <line x1="64" y1="72" x2="64" y2="92" stroke="#000000" stroke-width="8" stroke-linecap="round" />
+</svg>

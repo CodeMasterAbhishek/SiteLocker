@@ -1,0 +1,1255 @@
+/**
+ * SiteLock Lock Screen Stylesheet
+ * Contains the premium glassmorphism theme, circular keypads,
+ * SVG Pomodoro timer, shake animations, and unlock transitions.
+ * Appended inside the Shadow DOM to isolate styles from the host page.
+ */
+
+:host {
+  all: initial;
+}
+
+/* Fullscreen Overlay */
+.sitelock-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 2147483647 !important;
+  background: radial-gradient(circle at center, #111827 0%, #030712 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  color: #ffffff !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-overlay.active {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.sitelock-overlay.fade-out {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Top Action Bar (Mute) */
+.sitelock-top-bar {
+  position: absolute !important;
+  top: 24px !important;
+  right: 24px !important;
+  display: flex !important;
+  gap: 16px !important;
+}
+
+.sitelock-icon-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 50% !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.2s ease !important;
+}
+
+.sitelock-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+.sitelock-icon-btn:active {
+  transform: translateY(1px) !important;
+}
+
+/* Main Card */
+.sitelock-card {
+  background: rgba(15, 23, 42, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(30px) !important;
+  -webkit-backdrop-filter: blur(30px) !important;
+  border-radius: 28px !important;
+  overflow: hidden !important;
+  padding: 40px 48px !important;
+  width: 100% !important;
+  max-width: 400px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+
+/* Header */
+.sitelock-header {
+  margin-bottom: 28px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.sitelock-logo-wrapper {
+  width: 64px !important;
+  height: 64px !important;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4) !important;
+  animation: pulseLogo 3s infinite alternate !important;
+}
+
+.sitelock-logo-icon {
+  width: 32px !important;
+  height: 32px !important;
+  fill: #ffffff !important;
+  transition: transform 0.3s ease !important;
+}
+
+.sitelock-title {
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  margin: 0 0 6px 0 !important;
+  letter-spacing: -0.5px !important;
+  background: linear-gradient(to right, #ffffff, #d8b4fe) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.sitelock-subtitle {
+  font-size: 14px !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin: 0 !important;
+  word-break: break-all !important;
+  max-width: 280px !important;
+}
+
+/* Password dots */
+.sitelock-dots {
+  display: flex !important;
+  gap: 18px !important;
+  margin-bottom: 36px !important;
+  height: 16px !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.sitelock-dot {
+  width: 14px !important;
+  height: 14px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50% !important;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-dot.filled {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  transform: scale(1.15) !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Keypad Grid */
+.sitelock-keypad {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px 24px !important;
+  width: 100% !important;
+  max-width: 280px !important;
+  margin-bottom: 20px !important;
+  justify-items: center !important;
+  align-items: center !important;
+}
+
+.sitelock-key {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50% !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-key:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: scale(1.05) !important;
+}
+
+.sitelock-key:active {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(0.95) !important;
+}
+
+.sitelock-key-number {
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+
+.sitelock-key-letters {
+  font-size: 9px !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-top: 3px !important;
+}
+
+.sitelock-key.empty {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.sitelock-key.action-btn {
+  border: none !important;
+  background: transparent !important;
+}
+
+.sitelock-key.action-btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  transform: scale(1.05) !important;
+}
+
+.sitelock-key.action-btn svg {
+  width: 24px !important;
+  height: 24px !important;
+  stroke: rgba(255, 255, 255, 0.8) !important;
+  fill: none !important;
+  transition: stroke 0.2s !important;
+}
+
+.sitelock-key.action-btn:hover svg {
+  stroke: #ffffff !important;
+  fill: none !important;
+}
+
+/* Animations */
+@keyframes pulseLogo {
+  0% { box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4); }
+  100% { box-shadow: 0 10px 30px 2px rgba(124, 58, 237, 0.6); }
+}
+
+.shake {
+  animation: shakeEffect 0.5s ease-in-out !important;
+}
+
+@keyframes shakeEffect {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-12px); }
+  30%, 60%, 90% { transform: translateX(12px); }
+}
+
+/* Focus Mode Layout */
+.sitelock-focus-container {
+  display: none !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 10px !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+.sitelock-focus-container.active {
+  display: flex !important;
+}
+
+/* Circular Timer */
+.sitelock-timer-svg {
+  width: 200px !important;
+  height: 200px !important;
+  transform: rotate(-90deg) !important;
+  margin-bottom: 24px !important;
+}
+
+.sitelock-timer-bg {
+  fill: none !important;
+  stroke: rgba(255, 255, 255, 0.03) !important;
+  stroke-width: 12 !important;
+}
+
+.sitelock-timer-progress {
+  fill: none !important;
+  stroke: url(#timerGrad) !important;
+  stroke-width: 12 !important;
+  stroke-linecap: round !important;
+  stroke-dasharray: 565.48 !important; /* 2 * PI * r (r=90) */
+  stroke-dashoffset: 0 !important;
+  transition: stroke-dashoffset 1s linear !important;
+}
+
+.sitelock-timer-text-container {
+  position: absolute !important;
+  top: 100px !important; /* Centered in the 200px SVG circle vertically */
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important; /* Perfect horizontal and vertical alignment */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.sitelock-timer-countdown {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.sitelock-timer-label {
+  font-size: 11px !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  margin-top: 2px !important;
+}
+
+.sitelock-focus-msg {
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  margin-bottom: 16px !important;
+}
+
+.sitelock-timer-badge {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  color: #f87171 !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  margin-top: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.sitelock-pulse-dot {
+  width: 8px !important;
+  height: 8px !important;
+  background-color: #ef4444 !important;
+  border-radius: 50% !important;
+  animation: pulseRed 1.5s infinite !important;
+}
+
+@keyframes pulseRed {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* Hide elements helper */
+.hidden-el {
+  display: none !important;
+}
+
+/* Lockout Mode Layout */
+.sitelock-lockout-container {
+  display: none !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 10px !important;
+  width: 100% !important;
+}
+
+.sitelock-lockout-container.active {
+  display: flex !important;
+}
+
+/* ==========================================================================
+   THEME 1: LIGHT MINIMAL (sitelock-theme-light)
+   ========================================================================== */
+.sitelock-overlay.sitelock-theme-light {
+  background: #f5f7ff !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 45%),
+    linear-gradient(135deg, #f5f7ff 0%, #e0e7ff 100%) !important;
+  color: #111827 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(99, 102, 241, 0.12) !important;
+  box-shadow: 0 20px 40px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  color: #111827 !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-card::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(90deg, #6366f1, #ec4899) !important;
+  border-radius: 28px 28px 0 0 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-logo-wrapper {
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%) !important;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3) !important;
+  animation: none !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-title {
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  color: #111827 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-subtitle {
+  color: #4f46e5 !important;
+  font-weight: 500 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-dot {
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  background: transparent !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-dot.filled {
+  background-color: #4f46e5 !important;
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.5) !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key {
+  background: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.12) !important;
+  color: #1f2937 !important;
+  transition: all 0.2s ease !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key:hover {
+  background: rgba(99, 102, 241, 0.08) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  color: #4f46e5 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08) !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key:active {
+  background: rgba(99, 102, 241, 0.15) !important;
+  transform: translateY(1px) !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key-letters {
+  color: #8b5cf6 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-icon-btn {
+  background: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
+  color: #4b5563 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-icon-btn:hover {
+  background: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key.action-btn svg {
+  stroke: #4b5563 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-key.action-btn:hover svg {
+  stroke: #111827 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-timer-countdown {
+  color: #111827 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-timer-label {
+  color: #6b7280 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-focus-msg {
+  color: #374151 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-timer-badge {
+  background: rgba(79, 70, 229, 0.08) !important;
+  border-color: rgba(79, 70, 229, 0.2) !important;
+  color: #4f46e5 !important;
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-pulse-dot {
+  background-color: #4f46e5 !important;
+  animation: pulseLightBlue 1.5s infinite !important;
+}
+
+@keyframes pulseLightBlue {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.sitelock-overlay.sitelock-theme-light .sitelock-lockout-container div {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+
+/* ==========================================================================
+   THEME 2: DARK MODERN (sitelock-theme-dark)
+   ========================================================================== */
+/* Inherits base overlay rules directly from content.css */
+
+
+/* ==========================================================================
+   THEME 3: OCEAN BLUE (sitelock-theme-ocean)
+   ========================================================================== */
+.sitelock-overlay.sitelock-theme-ocean {
+  background: #021526 !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(0, 180, 216, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 119, 182, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, #021526 0%, #010a12 100%) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-card {
+  background: rgba(3, 43, 68, 0.45) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.03) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-logo-wrapper {
+  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%) !important;
+  box-shadow: 0 8px 24px rgba(0, 180, 216, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-title {
+  background: linear-gradient(to right, #ffffff, #00b4d8) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-dot {
+  border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-dot.filled {
+  background-color: #00b4d8 !important;
+  border-color: #00b4d8 !important;
+  box-shadow: 0 0 12px #00b4d8 !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-key {
+  background: rgba(3, 43, 68, 0.2) !important;
+  border-color: rgba(56, 189, 248, 0.15) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-key:hover {
+  background: rgba(56, 189, 248, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-key:active {
+  background: rgba(56, 189, 248, 0.2) !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-timer-countdown {
+  color: #00b4d8 !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-timer-badge {
+  background: rgba(0, 180, 216, 0.12) !important;
+  border-color: rgba(0, 180, 216, 0.25) !important;
+  color: #38bdf8 !important;
+}
+
+.sitelock-overlay.sitelock-theme-ocean .sitelock-pulse-dot {
+  background-color: #00b4d8 !important;
+}
+
+
+/* ==========================================================================
+   THEME 4: FOREST GREEN (sitelock-theme-forest)
+   ========================================================================== */
+.sitelock-overlay.sitelock-theme-forest {
+  background: #071711 !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(82, 183, 136, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(45, 106, 79, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, #071711 0%, #030a08 100%) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-card {
+  background: rgba(27, 67, 50, 0.45) !important;
+  border-color: rgba(82, 183, 136, 0.2) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(82, 183, 136, 0.03) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-logo-wrapper {
+  background: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%) !important;
+  box-shadow: 0 8px 24px rgba(82, 183, 136, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-title {
+  background: linear-gradient(to right, #ffffff, #52b788) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-dot {
+  border-color: rgba(82, 183, 136, 0.4) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-dot.filled {
+  background-color: #52b788 !important;
+  border-color: #52b788 !important;
+  box-shadow: 0 0 12px #52b788 !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-key {
+  background: rgba(27, 67, 50, 0.2) !important;
+  border-color: rgba(82, 183, 136, 0.15) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-key:hover {
+  background: rgba(82, 183, 136, 0.1) !important;
+  border-color: rgba(82, 183, 136, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-key:active {
+  background: rgba(82, 183, 136, 0.2) !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-timer-countdown {
+  color: #52b788 !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-timer-badge {
+  background: rgba(82, 183, 136, 0.12) !important;
+  border-color: rgba(82, 183, 136, 0.25) !important;
+  color: #52b788 !important;
+}
+
+.sitelock-overlay.sitelock-theme-forest .sitelock-pulse-dot {
+  background-color: #52b788 !important;
+}
+
+
+/* ==========================================================================
+   THEME 5: SUNSET PURPLE (sitelock-theme-sunset)
+   ========================================================================== */
+.sitelock-overlay.sitelock-theme-sunset {
+  background: #1e092b !important;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 0, 127, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 123, 0, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, #1e092b 0%, #0d0214 100%) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-card {
+  background: rgba(43, 12, 63, 0.45) !important;
+  border-color: rgba(255, 0, 127, 0.2) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255, 0, 127, 0.03) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-logo-wrapper {
+  background: linear-gradient(135deg, #ff007f 0%, #ff7b00 100%) !important;
+  box-shadow: 0 8px 24px rgba(255, 0, 127, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-title {
+  background: linear-gradient(to right, #ffffff, #ff007f) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-dot {
+  border-color: rgba(255, 0, 127, 0.4) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-dot.filled {
+  background: linear-gradient(135deg, #ff007f 0%, #ff7b00 100%) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 0 12px #ff007f !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-key {
+  background: rgba(43, 12, 63, 0.2) !important;
+  border-color: rgba(255, 0, 127, 0.15) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-key:hover {
+  background: rgba(255, 0, 127, 0.1) !important;
+  border-color: rgba(255, 0, 127, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-key:active {
+  background: rgba(255, 0, 127, 0.2) !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-timer-countdown {
+  color: #ff007f !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-timer-badge {
+  background: rgba(255, 0, 127, 0.12) !important;
+  border-color: rgba(255, 0, 127, 0.25) !important;
+  color: #ff007f !important;
+}
+
+.sitelock-overlay.sitelock-theme-sunset .sitelock-pulse-dot {
+  background-color: #ff007f !important;
+}
+
+
+/* ==========================================================================
+   THEME 6: MONOCHROME (sitelock-theme-mono)
+   ========================================================================== */
+.sitelock-overlay.sitelock-theme-mono {
+  background: #121212 !important;
+  background-image: linear-gradient(135deg, #121212 0%, #080808 100%) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-card {
+  background: #1e1e1e !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6) !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-card::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: #ffffff !important;
+  border-radius: 28px 28px 0 0 !important;
+  display: none !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-logo-wrapper {
+  background: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15) !important;
+  animation: none !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-logo-icon {
+  fill: #121212 !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-title {
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+  color: #ffffff !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-dot {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-dot.filled {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5) !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-key {
+  background: #242424 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-key:hover {
+  background: #333333 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-key:active {
+  background: #444444 !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-timer-countdown {
+  color: #ffffff !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-timer-badge {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-pulse-dot {
+  background-color: #ffffff !important;
+  animation: pulseMono 1.5s infinite !important;
+}
+
+@keyframes pulseMono {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.sitelock-overlay.sitelock-theme-mono .sitelock-lockout-container div {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   RECOVERY & RESET PIN FLOW
+   ========================================================================== */
+.sitelock-recovery-section {
+  display: none !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0 4px !important;
+}
+
+.sitelock-recovery-section.active {
+  display: flex !important;
+}
+
+.sitelock-recovery-title {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin: 0 0 6px 0 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.sitelock-recovery-prompt {
+  font-size: 13px !important;
+  color: rgba(255, 255, 255, 0.55) !important;
+  margin: 0 0 16px 0 !important;
+  line-height: 1.4 !important;
+  text-align: center !important;
+}
+
+/* Selected Word Slots — the 8 ordered pill boxes */
+.sitelock-recovery-selected-seq {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 34px !important;
+  margin-bottom: 14px !important;
+  padding: 8px !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  border: 1px dashed rgba(255, 255, 255, 0.1) !important;
+  border-radius: 14px !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-recovery-slot {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 28px !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+  text-transform: capitalize !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.2s ease !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-recovery-slot.filled {
+  background: rgba(79, 70, 229, 0.15) !important;
+  border-color: rgba(79, 70, 229, 0.35) !important;
+  color: #c7d2fe !important;
+  animation: slotFillPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+@keyframes slotFillPop {
+  0% { transform: scale(0.85); opacity: 0.5; }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Scrambled Word Buttons Grid */
+.sitelock-recovery-words-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin-bottom: 14px !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-recovery-word-btn {
+  padding: 8px 14px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+  text-transform: capitalize !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease, transform 0.15s ease !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.18) !important;
+  border-color: rgba(79, 70, 229, 0.4) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.15) !important;
+}
+
+.sitelock-recovery-word-btn:active:not(:disabled) {
+  transform: scale(0.95) !important;
+}
+
+.sitelock-recovery-word-btn.selected,
+.sitelock-recovery-word-btn:disabled {
+  opacity: 0.3 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.sitelock-recovery-error {
+  font-size: 12px !important;
+  color: #ef4444 !important;
+  margin: 0 0 12px 0 !important;
+  width: 100% !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+}
+
+.sitelock-recovery-buttons {
+  display: flex !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+.sitelock-btn {
+  flex: 1 !important;
+  padding: 12px 18px !important;
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  border: none !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.sitelock-btn.primary-btn {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+}
+
+.sitelock-btn.primary-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4) !important;
+}
+
+.sitelock-btn.primary-btn:active {
+  transform: translateY(1px) !important;
+}
+
+.sitelock-btn.secondary-btn {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.sitelock-btn.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.sitelock-btn.secondary-btn:active {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.sitelock-forgot-pin {
+  display: inline-block !important;
+  margin-top: 18px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: color 0.2s, transform 0.2s !important;
+}
+
+.sitelock-forgot-pin:hover {
+  color: #ffffff !important;
+  transform: translateY(-0.5px) !important;
+}
+
+/* ==========================================================================
+   THEME RECOVERY ADAPTATIONS
+   ========================================================================== */
+
+/* LIGHT THEME (sitelock-theme-light) */
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-title {
+  color: #111827 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-prompt {
+  color: #4b5563 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-selected-seq {
+  background: rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-slot {
+  background: #f3f4f6 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #9ca3af !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-slot.filled {
+  background: rgba(79, 70, 229, 0.1) !important;
+  border-color: rgba(79, 70, 229, 0.3) !important;
+  color: #4f46e5 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-word-btn {
+  background: #f3f4f6 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #1f2937 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.08) !important;
+  border-color: rgba(79, 70, 229, 0.3) !important;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-word-btn.selected,
+.sitelock-overlay.sitelock-theme-light .sitelock-recovery-word-btn:disabled {
+  opacity: 0.35 !important;
+  background: #e5e7eb !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-btn.primary-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2) !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-btn.secondary-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #374151 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-btn.secondary-btn:hover {
+  background: #f9fafb !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-forgot-pin {
+  color: #6b7280 !important;
+}
+.sitelock-overlay.sitelock-theme-light .sitelock-forgot-pin:hover {
+  color: #4f46e5 !important;
+}
+
+/* OCEAN BLUE THEME (sitelock-theme-ocean) */
+.sitelock-overlay.sitelock-theme-ocean .sitelock-recovery-selected-seq {
+  background: rgba(3, 43, 68, 0.25) !important;
+  border-color: rgba(56, 189, 248, 0.12) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-recovery-slot {
+  background: rgba(3, 43, 68, 0.3) !important;
+  border-color: rgba(56, 189, 248, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-recovery-slot.filled {
+  background: rgba(0, 180, 216, 0.15) !important;
+  border-color: rgba(0, 180, 216, 0.35) !important;
+  color: #7dd3fc !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-recovery-word-btn {
+  background: rgba(3, 43, 68, 0.3) !important;
+  border-color: rgba(56, 189, 248, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: rgba(0, 180, 216, 0.2) !important;
+  border-color: rgba(0, 180, 216, 0.4) !important;
+  box-shadow: 0 3px 8px rgba(0, 180, 216, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-btn.primary-btn {
+  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%) !important;
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.25) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-btn.secondary-btn {
+  background: rgba(3, 43, 68, 0.3) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-btn.secondary-btn:hover {
+  background: rgba(3, 43, 68, 0.5) !important;
+  border-color: rgba(56, 189, 248, 0.35) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-forgot-pin {
+  color: rgba(56, 189, 248, 0.5) !important;
+}
+.sitelock-overlay.sitelock-theme-ocean .sitelock-forgot-pin:hover {
+  color: #00b4d8 !important;
+}
+
+/* FOREST GREEN THEME (sitelock-theme-forest) */
+.sitelock-overlay.sitelock-theme-forest .sitelock-recovery-selected-seq {
+  background: rgba(27, 67, 50, 0.25) !important;
+  border-color: rgba(82, 183, 136, 0.12) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-recovery-slot {
+  background: rgba(27, 67, 50, 0.3) !important;
+  border-color: rgba(82, 183, 136, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-recovery-slot.filled {
+  background: rgba(82, 183, 136, 0.15) !important;
+  border-color: rgba(82, 183, 136, 0.35) !important;
+  color: #86efac !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-recovery-word-btn {
+  background: rgba(27, 67, 50, 0.3) !important;
+  border-color: rgba(82, 183, 136, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: rgba(82, 183, 136, 0.2) !important;
+  border-color: rgba(82, 183, 136, 0.4) !important;
+  box-shadow: 0 3px 8px rgba(82, 183, 136, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-btn.primary-btn {
+  background: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%) !important;
+  box-shadow: 0 4px 12px rgba(82, 183, 136, 0.25) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-btn.secondary-btn {
+  background: rgba(27, 67, 50, 0.3) !important;
+  border-color: rgba(82, 183, 136, 0.2) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-btn.secondary-btn:hover {
+  background: rgba(27, 67, 50, 0.5) !important;
+  border-color: rgba(82, 183, 136, 0.35) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-forgot-pin {
+  color: rgba(82, 183, 136, 0.5) !important;
+}
+.sitelock-overlay.sitelock-theme-forest .sitelock-forgot-pin:hover {
+  color: #52b788 !important;
+}
+
+/* SUNSET PURPLE THEME (sitelock-theme-sunset) */
+.sitelock-overlay.sitelock-theme-sunset .sitelock-recovery-selected-seq {
+  background: rgba(43, 12, 63, 0.25) !important;
+  border-color: rgba(255, 0, 127, 0.12) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-recovery-slot {
+  background: rgba(43, 12, 63, 0.3) !important;
+  border-color: rgba(255, 0, 127, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-recovery-slot.filled {
+  background: rgba(255, 0, 127, 0.15) !important;
+  border-color: rgba(255, 0, 127, 0.35) !important;
+  color: #fda4af !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-recovery-word-btn {
+  background: rgba(43, 12, 63, 0.3) !important;
+  border-color: rgba(255, 0, 127, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: rgba(255, 0, 127, 0.2) !important;
+  border-color: rgba(255, 0, 127, 0.4) !important;
+  box-shadow: 0 3px 8px rgba(255, 0, 127, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-btn.primary-btn {
+  background: linear-gradient(135deg, #ff007f 0%, #ff7b00 100%) !important;
+  box-shadow: 0 4px 12px rgba(255, 0, 127, 0.25) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-btn.secondary-btn {
+  background: rgba(43, 12, 63, 0.3) !important;
+  border-color: rgba(255, 0, 127, 0.2) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-btn.secondary-btn:hover {
+  background: rgba(43, 12, 63, 0.5) !important;
+  border-color: rgba(255, 0, 127, 0.35) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-forgot-pin {
+  color: rgba(255, 0, 127, 0.5) !important;
+}
+.sitelock-overlay.sitelock-theme-sunset .sitelock-forgot-pin:hover {
+  color: #ff007f !important;
+}
+
+/* MONOCHROME THEME (sitelock-theme-mono) */
+.sitelock-overlay.sitelock-theme-mono .sitelock-recovery-selected-seq {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-recovery-slot {
+  background: #242424 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-recovery-slot.filled {
+  background: #333333 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-recovery-word-btn {
+  background: #242424 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-recovery-word-btn:hover:not(:disabled) {
+  background: #333333 !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 3px 8px rgba(255, 255, 255, 0.05) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-btn.primary-btn {
+  background: #ffffff !important;
+  color: #121212 !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-btn.secondary-btn {
+  background: #242424 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-btn.secondary-btn:hover {
+  background: #333333 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-forgot-pin {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.sitelock-overlay.sitelock-theme-mono .sitelock-forgot-pin:hover {
+  color: #ffffff !important;
+}
