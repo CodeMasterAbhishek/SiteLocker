@@ -19,19 +19,19 @@
     "128": "icons/icon128.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "js/background.js"
   },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["security.js", "audio/audio.js", "content.js"],
+      "js": ["js/security.js", "audio/audio.js", "js/content.js"],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["content.css"],
+      "resources": ["css/content.css"],
       "matches": ["http://*/*", "https://*/*"]
     }
   ]

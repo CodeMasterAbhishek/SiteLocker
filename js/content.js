@@ -80,7 +80,7 @@
     // Load full styles
     const styleEl = document.createElement('style');
     try {
-      const cssUrl = chrome.runtime.getURL('content.css');
+      const cssUrl = chrome.runtime.getURL('css/content.css');
       const cssRes = await fetch(cssUrl);
       styleEl.textContent = await cssRes.text();
     } catch (e) {
