@@ -4,8 +4,6 @@ A premium, highly secure site lock utility for Google Chrome and Chromium-based 
 
 Designed and built with premium modern web design aesthetics, smooth animations, and rich theme choices.
 
----
-
 ## Features
 
 - **Secure Passcode Protection**: Lock specific domains with a SHA-256 encrypted 4-digit PIN.
@@ -22,7 +20,6 @@ Designed and built with premium modern web design aesthetics, smooth animations,
 - **Focus Mode (Pomodoro)**: Restrict access to distracting domains for a set period with a countdown timer that cannot be bypassed.
 - **Seed Phrase Recovery**: Backup 8-word seed phrase system in case you forget your passcode.
 
----
 
 ## Installation (Developer Mode)
 
@@ -35,7 +32,6 @@ To run this extension locally or prepare it for upload:
 5. Select the `Lock` directory containing the extension files.
 6. Pin the extension in your toolbar to see the clean outline lock icon!
 
----
 
 ## License & Credits
 
