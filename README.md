@@ -37,30 +37,6 @@ To run this extension locally or prepare it for upload:
 
 ---
 
-## Project Structure
-
-```text
-Lock/
-├── audio/
-│   └── audio.js                 # High-performance Web Audio synthesizer
-├── icons/
-│   ├── icon.svg                 # Vector source asset
-│   ├── icon16.png               # Toolbar icon (16x16)
-│   ├── icon48.png               # Extension page icon (48x48)
-│   └── icon128.png              # Store icon (128x128)
-├── background.js                # Extension service worker (tab and locking rules)
-├── content.css                  # Lock screen page styling
-├── content.js                   # Dom injection and lock page controller
-├── manifest.json                # Extension MV3 configuration
-├── popup.css                    # Control panel CSS styles
-├── popup.html                   # Control panel layout
-├── popup.js                     # Onboarding, focus timer & settings controller
-├── security.js                  # SHA-256 passcode verification & crypto storage
-└── .gitignore                   # Standard git file exclusion list
-```
-
----
-
 ## License & Credits
 
 Made by **Abhishek** with love. Feel free to clone, edit, or customize it for your personal use.
