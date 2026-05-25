@@ -4,8 +4,6 @@ Last updated: May 26, 2026
 
 Your privacy is extremely important to us. This Privacy Policy details how **SiteLocker** handles user data and privacy.
 
----
-
 ## 1. Information Collection and Use
 
 **SiteLocker does not collect, transmit, or share any personal data.** 
