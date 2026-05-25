@@ -1,4 +1,4 @@
-# SiteLock 🔒
+# SiteLock
 
 A premium, highly secure site lock utility for Google Chrome and Chromium-based browsers. Lock distracting or sensitive domains behind a secure 4-digit passcode, helping you stay focused and productive.
 
@@ -63,4 +63,4 @@ Lock/
 
 ## License & Credits
 
-Made by **Abhishek** with love ❤️. Feel free to clone, edit, or customize it for your personal use.
+Made by **Abhishek** with love. Feel free to clone, edit, or customize it for your personal use.
